@@ -1,11 +1,11 @@
 import { weatherSelect } from "../../store/slices/weather/weatherSlice";
 import { useAppSelector } from "../../utils/hooks";
 import CurrentTime from "./CurrentTime";
-import MoreDaysTemp from "./MoreDaysTemp";
 
 export interface WeatherData {
+  dt: number;
   list: any;
-  city: any;
+  city: Record<string, string>;
   name: string;
   main: {
     temp: number;
@@ -19,13 +19,14 @@ export interface WeatherData {
   temp: string;
 }
 
-const Main: React.FC<WeatherData> = ({ setCurrentDay, temp }) => {
+type MainProps = { temp: string };
+
+const Main: React.FC<MainProps> = ({ temp }) => {
   const weather = useAppSelector<WeatherData>(weatherSelect);
 
   return (
     <div>
       <CurrentTime weather={weather} temp={temp} />
-      <MoreDaysTemp setCurrentDay={setCurrentDay} temp={temp} />
     </div>
   );
 };

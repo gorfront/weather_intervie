@@ -1,3 +1,4 @@
+import React, { useCallback } from "react";
 import { fetchWeather } from "../../store/slices/weather/weatherAPI";
 import { useAppDispatch } from "../../utils/hooks";
 
@@ -10,14 +11,24 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = ({ temp, city, setCity }) => {
   const dispatch = useAppDispatch();
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const enteredCity = formData.get("city") as string;
-    if (enteredCity) {
-      dispatch(fetchWeather({ city: enteredCity, temp }));
-    }
-  };
+  const submitHandler = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const enteredCity = formData.get("city") as string;
+      if (enteredCity) {
+        dispatch(fetchWeather({ city: enteredCity, temp }));
+      }
+    },
+    [dispatch, temp]
+  );
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCity(e.target.value);
+    },
+    [setCity]
+  );
 
   return (
     <form onSubmit={submitHandler}>
@@ -25,7 +36,8 @@ const Search: React.FC<SearchProps> = ({ temp, city, setCity }) => {
         type="text"
         name="city"
         value={city}
-        onChange={(e) => setCity(e.target.value)}
+        onChange={handleChange}
+        placeholder="Enter city"
       />
       <button type="submit">Search City</button>
     </form>

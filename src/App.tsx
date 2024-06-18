@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import HomeWrapper from "./wrapper/HomeWrapper";
 import Main from "./components/Main/Main";
-import CurrentDay from "./components/CurrentDay/CurrentDay";
 import { useState } from "react";
 import CurrentPage from "./components/CurrentDay/CurrentPage";
 
@@ -14,25 +13,11 @@ const App: React.FC = () => {
     <Routes>
       <Route
         path="/"
-        element={<HomeWrapper {...{ temp, setTemp, city, setCity }} />}
+        element={
+          <HomeWrapper {...{ temp, setTemp, city, setCity, setCurrentDay }} />
+        }
       >
-        <Route
-          index
-          element={
-            <Main
-              setCurrentDay={setCurrentDay}
-              list={undefined}
-              city={undefined}
-              name={""}
-              main={{
-                temp: 0,
-              }}
-              weather={[]}
-              dt_txt={""}
-              temp={temp}
-            />
-          }
-        />
+        <Route index element={<Main temp={temp} />} />
         <Route
           path="current"
           element={<CurrentPage {...{ temp, city, currentDay }} />}

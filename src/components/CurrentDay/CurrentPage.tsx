@@ -1,15 +1,15 @@
-import MoreDaysTemp from "../Main/MoreDaysTemp";
+import React from "react";
 import CurrentDay from "./CurrentDay";
 
 interface CurrentPageProps {
   currentDay: number;
+  temp: string;
 }
 
-const CurrentPage: React.FC<CurrentPageProps> = ({ currentDay }) => {
+const CurrentPage: React.FC<CurrentPageProps> = ({ currentDay, temp }) => {
   return (
     <div>
-      <CurrentDay temp={""} city={""} currentDay={currentDay} />
-      <MoreDaysTemp setCurrentDay={() => {}} temp="" />
+      <CurrentDay {...{ currentDay, temp }} />
     </div>
   );
 };

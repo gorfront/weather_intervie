@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useAppDispatch } from "../../utils/hooks";
 import { fetchWeather } from "../../store/slices/weather/weatherAPI";
 
@@ -12,8 +12,17 @@ const Temp: React.FC<TempProps> = ({ temp, setTemp, city }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchWeather({ city, temp }));
-  }, [city, temp]);
+    if (temp) {
+      dispatch(fetchWeather({ city, temp }));
+    }
+  }, [temp, dispatch]);
+
+  const handleTempChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTemp(e.target.value);
+    },
+    [setTemp]
+  );
 
   return (
     <div className="header--temp">
@@ -23,7 +32,7 @@ const Temp: React.FC<TempProps> = ({ temp, setTemp, city }) => {
         name="temp"
         checked={temp === "metric"}
         value="metric"
-        onChange={(e) => setTemp(e.target.value)}
+        onChange={handleTempChange}
       />
       <label htmlFor="tempChoiceC">°C</label>
 
@@ -33,7 +42,7 @@ const Temp: React.FC<TempProps> = ({ temp, setTemp, city }) => {
         name="temp"
         checked={temp === "standard"}
         value="standard"
-        onChange={(e) => setTemp(e.target.value)}
+        onChange={handleTempChange}
       />
       <label htmlFor="tempChoiceF">°F</label>
     </div>
